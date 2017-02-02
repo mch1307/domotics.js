@@ -1,0 +1,33 @@
+{
+  "name": "domotics.js",
+  "version": "1.0.0",
+  "description": "nodejs domotics interface",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mch1307/docmotics.js.git"
+  },
+  "keywords": [
+    "nodejs",
+    "hapi",
+    "niko"
+  ],
+  "author": "mch1307",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mch1307/docmotics.js/issues"
+  },
+  "homepage": "https://github.com/mch1307/docmotics.js#readme",
+  "dependencies": {
+    "bunyan": "^1.8.5",
+    "hapi": "^16.1.0",
+    "japi": "0.0.1",
+    "lokijs": "^1.4.2",
+    "nes": "^6.4.0",
+    "node-json-rpc": "0.0.1",
+    "node-rest-client": "^2.0.1"
+  }
+}
