@@ -33,5 +33,13 @@
     "node-json-rpc": "0.0.1",
     "node-rest-client": "^2.0.1",
     "vision": "^4.1.1"
+  },
+  "devDependencies": {
+    "eslint-config-standard": "^6.2.1",
+    "eslint-config-standard-jsx": "^3.2.0",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-react": "^6.9.0",
+    "eslint-plugin-standard": "^2.0.1",
+    "standard": "^8.6.0"
   }
 }
