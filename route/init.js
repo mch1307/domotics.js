@@ -13,7 +13,7 @@ exports.register = (server, options, next) => {
     },
     config: {
       description: 'Get list of all equipments',
-      notes: 'simply call /init to get a JSON list of all equipments',
+      notes: 'http get in /init to get a JSON list of all equipments',
       tags: ['api', 'init', 'list all']
     }
   })
