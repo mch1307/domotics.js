@@ -6,18 +6,14 @@ const cfg = require('../conf/conf')
 const log = require('../lib/logger')
 const util = require('util')
 // const router = require('../lib/router')
-//const nhc = require('../lib/nhc')
+// const nhc = require('../lib/nhc')
 const re = /\r\n|\n\r|\n|\r/g
-const Nes = require('nes')
-let completeData
+// const Nes = require('nes')
 
 exports.register = (server, options, next) => {
   // log.debug('start cmd register ##################')
   // log.debug('before init ##################')
   // server.subscription('/events')
-  setTimeout(() => {
-    server.publish('/events', 'Hello')
-  }, 4000)
   server.method('nhc.listen', () => {
     // NHC Listener
     log.debug('starting listener init ##################')
@@ -33,14 +29,17 @@ exports.register = (server, options, next) => {
     log.debug('nhc nhcListen connected to: ' + cfg.NHC.host)
 
     nhcListen.on('data', (data) => {
+      // log.debug('listener raw data: ' + data)
       if (data.indexOf('\n') < 0) {
         completeData += data
       } else {
         completeData += data
         let allMsg = completeData.replace(re, '\n').split('\n')
+        completeData = ''
+        // log.debug('listener complete data: ' + completeData)
         allMsg.forEach((oneMsg, i) => {
           if (oneMsg) {
-            //log.debug('nhc listen: ' + oneMsg)
+            // log.debug('nhc listen: ' + oneMsg)
             let jsNhc = JSON.parse(oneMsg)
             // get event type
             if (jsNhc.hasOwnProperty('cmd')) {
@@ -56,52 +55,51 @@ exports.register = (server, options, next) => {
               }
             } else if (jsNhc.hasOwnProperty('event')) {
               // event message -> notify + update database
-              //log.debug('event received')
+              // log.debug('event received')
               if (jsNhc.event === 'listactions') {
-                  log.debug('niko listener received action event: ' + util.inspect(jsNhc, false, null))
+                log.debug('niko listener received action event: ' + util.inspect(jsNhc, false, null))
                 for (let i = 0; i < jsNhc.data.length; i++) {
                   let nikoItem = persist.getNikoAction(jsNhc.data[i].id)
-                  //log.debug('router after getNikoAction: ' + util.inspect(nikoItem, false, null))
+                  // log.debug('router after getNikoAction: ' + util.inspect(nikoItem, false, null))
                   nikoItem.value = jsNhc.data[i].value1
                   log.debug('niko listener ---- invoke action publish ---- ' + util.inspect(nikoItem, false, null))
                   server.publish('/events', nikoItem)
                   publish.sendItemEvent(nikoItem)
-                  //log.debug('router NHC update: ' + util.inspect(nikoItem, false, null))
+                  // log.debug('router NHC update: ' + util.inspect(nikoItem, false, null))
                   persist.updateNikoAction(jsNhc.data[i])
-                  //log.debug('router check value after: ' + util.inspect(persist.getNikoAction(jsNhc.data[i].id), false, null))
+                  // log.debug('router check value after: ' + util.inspect(persist.getNikoAction(jsNhc.data[i].id), false, null))
                 }
               }
               if (jsNhc.event === 'listthermostat') {
-                log.debug('niko listener received thermostat event: ' + util.inspect(jsNhc, false, null))
+                // log.debug('niko listener received thermostat event: ' + util.inspect(jsNhc, false, null))
                 for (let i = 0; i < jsNhc.data.length; i++) {
-
                   let nikoItem = persist.getNikoThermostat(jsNhc.data[i].id)
                   // log.debug('router after getNikoThermostat: ' + util.inspect(nikoItem, false, null))
                   nikoItem.value = jsNhc.data[i].value1
                   log.debug('nhListen ---- invoke publish ---- ' + util.inspect(nikoItem, false, null))
                   server.publish('/events', nikoItem)
-                  //publish.sendItemEvent(nikoItem)
+                  // publish.sendItemEvent(nikoItem)
                   // log.debug('router NHC update: ' + util.inspect(nikoItem, false, null))
                   persist.updateNikoThermostat(jsNhc.data[i])
                   // log.debug('router check value after: ' + util.inspect(persist.getNikoThermostat(jsNhc.data[i].id), false, null))
                 }
               }
-                if (jsNhc.event === 'getlive') {
-                    for (let i = 0; i < jsNhc.data.length; i++) {
-                        let nikoItem = persist.getNikoEnergy(jsNhc.data[i].channel)
-                        // log.debug('router after getNikoEnergy: ' + util.inspect(nikoItem, false, null))
-                        nikoItem.value = jsNhc.data[i].v
-                        // log.debug('nhListen ---- invoke pusblish ---- ' + util.inspect(nikoItem, false, null))
-                        server.publish('/events', nikoItem)
-                        //publish.sendItemEvent(nikoItem)
-                        // log.debug('router NHC update: ' + util.inspect(nikoItem, false, null))
-                        persist.updateNikoEnergy(jsNhc.data[i])
-                        // log.debug('router check value after: ' + util.inspect(persist.getNikoEnergy(jsNhc.data[i].channel), false, null))
-                    }
+              if (jsNhc.event === 'getlive') {
+                for (let i = 0; i < jsNhc.data.length; i++) {
+                  let nikoItem = persist.getNikoEnergy(jsNhc.data[i].channel)
+                  // log.debug('router after getNikoEnergy: ' + util.inspect(nikoItem, false, null))
+                  nikoItem.value = jsNhc.data[i].v
+                  // log.debug('nhListen ---- invoke publish ---- ' + util.inspect(nikoItem, false, null))
+                  server.publish('/events', nikoItem)
+                  // publish.sendItemEvent(nikoItem)
+                  // log.debug('router NHC update: ' + util.inspect(nikoItem, false, null))
+                  persist.updateNikoEnergy(jsNhc.data[i])
+                  // log.debug('router check value after: ' + util.inspect(persist.getNikoEnergy(jsNhc.data[i].channel), false, null))
                 }
+              }
             }
 //            router.routeNhc(oneMsg)
-            //log.debug('nhc nhcListen routed: ' + oneMsg)
+            // log.debug('nhc nhcListen routed: ' + oneMsg)
           }
         })
       }
