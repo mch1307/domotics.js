@@ -67,6 +67,19 @@ exports.register = (server, options, next) => {
                   log.debug('router check value after: ' + util.inspect(persist.getNikoAction(jsNhc.data[i].id), false, null))
                 }
               }
+              if (jsNhc.event === 'listthermostat') {
+                for (let i = 0; i < jsNhc.data.length; i++) {
+                  let nikoItem = persist.getNikoThermostat(jsNhc.data[i].id)
+                  log.debug('router after getNikoThermostat: ' + util.inspect(nikoItem, false, null))
+                  nikoItem.value = jsNhc.data[i].value1
+                  log.debug('nhListen ---- invoke pusblish ---- ' + util.inspect(nikoItem, false, null))
+                  server.publish('/events', nikoItem)
+                  publish.sendItemEvent(nikoItem)
+                  log.debug('router NHC update: ' + util.inspect(nikoItem, false, null))
+                  persist.updateNikoThermostat(jsNhc.data[i])
+                  log.debug('router check value after: ' + util.inspect(persist.getNikoThermostat(jsNhc.data[i].id), false, null))
+                }
+              }
             }
 //            router.routeNhc(oneMsg)
             log.debug('nhc nhcListen routed: ' + oneMsg)
