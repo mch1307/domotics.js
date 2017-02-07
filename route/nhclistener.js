@@ -57,12 +57,12 @@ exports.register = (server, options, next) => {
               // event message -> notify + update database
               // log.debug('event received')
               if (jsNhc.event === 'listactions') {
-                log.debug('niko listener received action event: ' + util.inspect(jsNhc, false, null))
+                // log.debug('niko listener received action event: ' + util.inspect(jsNhc, false, null))
                 for (let i = 0; i < jsNhc.data.length; i++) {
                   let nikoItem = persist.getNikoAction(jsNhc.data[i].id)
                   // log.debug('router after getNikoAction: ' + util.inspect(nikoItem, false, null))
                   nikoItem.value = jsNhc.data[i].value1
-                  log.debug('niko listener ---- invoke action publish ---- ' + util.inspect(nikoItem, false, null))
+                  // log.debug('niko listener ---- invoke action publish ---- ' + util.inspect(nikoItem, false, null))
                   server.publish('/events', nikoItem)
                   publish.sendItemEvent(nikoItem)
                   // log.debug('router NHC update: ' + util.inspect(nikoItem, false, null))
@@ -85,17 +85,15 @@ exports.register = (server, options, next) => {
                 }
               }
               if (jsNhc.event === 'getlive') {
-                for (let i = 0; i < jsNhc.data.length; i++) {
-                  let nikoItem = persist.getNikoEnergy(jsNhc.data[i].channel)
-                  // log.debug('router after getNikoEnergy: ' + util.inspect(nikoItem, false, null))
-                  nikoItem.value = jsNhc.data[i].v
+                  let nikoItem = persist.getNikoEnergy(jsNhc.data.channel)
+                  //log.debug('router after getNikoEnergy: ' + jsNhc.data.v /1000)
+                  nikoItem.value = jsNhc.data.v /1000
                   // log.debug('nhListen ---- invoke publish ---- ' + util.inspect(nikoItem, false, null))
                   server.publish('/events', nikoItem)
                   publish.sendItemEvent(nikoItem)
                   // log.debug('router NHC update: ' + util.inspect(nikoItem, false, null))
-                  persist.updateNikoEnergy(jsNhc.data[i])
+                  persist.updateNikoEnergy(jsNhc.data)
                   // log.debug('router check value after: ' + util.inspect(persist.getNikoEnergy(jsNhc.data[i].channel), false, null))
-                }
               }
             }
 //            router.routeNhc(oneMsg)
