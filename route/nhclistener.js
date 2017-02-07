@@ -78,7 +78,7 @@ exports.register = (server, options, next) => {
                   nikoItem.value = jsNhc.data[i].value1
                   log.debug('nhListen ---- invoke publish ---- ' + util.inspect(nikoItem, false, null))
                   server.publish('/events', nikoItem)
-                  // publish.sendItemEvent(nikoItem)
+                  publish.sendItemEvent(nikoItem)
                   // log.debug('router NHC update: ' + util.inspect(nikoItem, false, null))
                   persist.updateNikoThermostat(jsNhc.data[i])
                   // log.debug('router check value after: ' + util.inspect(persist.getNikoThermostat(jsNhc.data[i].id), false, null))
@@ -91,7 +91,7 @@ exports.register = (server, options, next) => {
                   nikoItem.value = jsNhc.data[i].v
                   // log.debug('nhListen ---- invoke publish ---- ' + util.inspect(nikoItem, false, null))
                   server.publish('/events', nikoItem)
-                  // publish.sendItemEvent(nikoItem)
+                  publish.sendItemEvent(nikoItem)
                   // log.debug('router NHC update: ' + util.inspect(nikoItem, false, null))
                   persist.updateNikoEnergy(jsNhc.data[i])
                   // log.debug('router check value after: ' + util.inspect(persist.getNikoEnergy(jsNhc.data[i].channel), false, null))
