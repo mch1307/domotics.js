@@ -4,7 +4,7 @@
 
 exports.register = (server, options, next) => {
   'use strict'
-  const nhc = require('../lib/nhc')
+  const nhc = require('../lib/nhcinit')
   const cfg = require('../conf/conf')
   server.route({
     method: 'PUT',
@@ -20,7 +20,7 @@ exports.register = (server, options, next) => {
         actionCmd.value1 = params.value
         nhc.sendNhcCmd(JSON.stringify(actionCmd))
       }
-      return reply()
+      return reply().code(204)
     },
     config: {
       description: 'Send command to provider',
