@@ -3,7 +3,7 @@
 const config = require('./conf/conf')
 const log = require('./lib/logger')
 const Hapi = require('hapi')
-const nhc = require('./lib/nhc')
+const nhc = require('./lib/nhcinit')
 // plugins
 const Blipp = require('blipp')
 const HapiSwagger = require('hapi-swagger')
