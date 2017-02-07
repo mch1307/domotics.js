@@ -13,6 +13,7 @@ const Nes = require('nes')
 const NhcListen = require('./route/nhclistener')
 const Init = require('./route/init')
 const NhCmd = require('./route/nhcmd')
+const LogItem = require('./route/logitem')
 
 const options ={
   info: {
@@ -40,7 +41,7 @@ server.connection({
 server.register([
   { register: Nes, options: { auth: { type: 'direct' } } },
   { register: HapiSwagger, options: options },
-  Init, NhcListen, NhCmd, Blipp, Inert, Vision], (err) => {
+  Init, NhcListen, NhCmd, Blipp, Inert, Vision, LogItem], (err) => {
   if (err) {
     throw err
   }
