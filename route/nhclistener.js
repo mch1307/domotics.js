@@ -76,7 +76,7 @@ exports.register = (server, options, next) => {
                   let nikoItem = persist.getNikoThermostat(jsNhc.data[i].id)
                   // log.debug('router after getNikoThermostat: ' + util.inspect(nikoItem, false, null))
                   nikoItem.value = jsNhc.data[i].measured/10
-                  log.debug('nhListen ---- invoke publish ---- ' + util.inspect(nikoItem, false, null))
+                  // log.debug('nhListen ---- invoke publish ---- ' + util.inspect(nikoItem, false, null))
                   server.publish('/events', nikoItem)
                   publish.sendItemEvent(nikoItem)
                   // log.debug('router NHC update: ' + util.inspect(nikoItem, false, null))
