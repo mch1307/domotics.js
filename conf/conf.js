@@ -1,4 +1,5 @@
 const path = require('path')
+const Joi = require('joi')
 const cfg = {}
 
 cfg.NHC = {}
@@ -20,5 +21,12 @@ cfg.NHC.cmd = {
   cmd: '',
   id: '',
   value1: ''}
+cfg.genericItem = {
+  provider : Joi.string().min(3).max(3).required,
+  id : Joi.number.required,
+  type : Joi.string().min(1).max(3).required,
+  name : Joi.string().min(3).max(30).required,
+  value :Joi.number.required
+  }
 
 module.exports = cfg
