@@ -15,7 +15,7 @@ const Init = require('./route/init')
 const NhCmd = require('./route/nhcmd')
 const LogItem = require('./route/logitem')
 
-const options ={
+const options = {
   info: {
     'title': 'domotics.js API documentation'
   }
@@ -41,7 +41,7 @@ server.connection({
 server.register([
   { register: Nes, options: { auth: { type: 'direct' } } },
   { register: HapiSwagger, options: options },
-  Init, NhcListen, NhCmd, Blipp, Inert, Vision, LogItem], (err) => {
+  NhcListen, NhCmd, Init, Blipp, Inert, Vision, LogItem], (err) => {
   if (err) {
     throw err
   }

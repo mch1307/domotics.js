@@ -16,7 +16,6 @@ exports.register = (server, options, next) => {
   // server.subscription('/events')
   server.method('nhc.listen', () => {
     // NHC Listener
-    log.debug('starting listener init ##################')
     let completeData = ''
     let nhcListen = new net.Socket({readable: true, writable: true})
     nhcListen.setEncoding('utf8')
