@@ -3,7 +3,6 @@
  */
 exports.register = (server, options, next) => {
   'use strict'
-  const persist = require('../lib/persist.js')
   const cfg = require('../conf/conf.js')
   const Joi = require('joi')
   server.route({
@@ -11,7 +10,7 @@ exports.register = (server, options, next) => {
     path: '/init',
     config: {
       handler: function (request, reply) {
-        return reply(persist.getAllItems()).code(200)
+        return reply(server.plugins.db.getAllItems()).code(200)
       },
       description: 'Get list of all equipments',
       notes: 'Get a JSON list of all registered equipments',

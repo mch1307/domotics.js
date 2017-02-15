@@ -8,7 +8,7 @@ exports.register = (server, options, next) => {
   const log = require('../lib/logger')
   const util = require('util')
   const Joi = require('joi')
-  const persist = require('../lib/persist')
+  // const persist = require('../lib/persist')
   const Boom = require('boom')
 
   server.route({
@@ -25,10 +25,10 @@ exports.register = (server, options, next) => {
         item.uid = item.provider + '-' + item.type + '-' + item.itemID
         item.value = reqItem.value
         item.itemName = reqItem.itemName
-        persist.upsertGenericItem(item)
+        server.plugins.db.upsertGenericItem(item)
         return reply().code(200)
       },
-      description: 'Create or update Generic equipment',
+      description: 'Create or update generic equipment',
       // notes: 'http get in /init to get a JSON list of all equipments',
       tags: ['api', 'logitem', 'upsert'],
       validate: {
